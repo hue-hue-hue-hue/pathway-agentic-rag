@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pathway-agentic-rag"
+version = "0.1.0"
+description = ""
+authors = ["Karthik Ayangar <karthik.ayangar7118@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+docling = "^2.4.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
