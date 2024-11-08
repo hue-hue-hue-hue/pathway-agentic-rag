@@ -252,8 +252,8 @@ files = [
 docling-core = ">=2.0,<3.0"
 docutils = "!=0.21"
 numpy = [
-    {version = ">=2.0.2,<3.0.0", markers = "python_version >= \"3.13\""},
     {version = ">=1.26.4,<2.0.0", markers = "python_version >= \"3.9\" and python_version < \"3.13\""},
+    {version = ">=2.0.2,<3.0.0", markers = "python_version >= \"3.13\""},
 ]
 pandas = {version = ">=2.1.4,<3.0.0", markers = "python_version >= \"3.9\""}
 python-dotenv = ">=1.0.0,<2.0.0"
@@ -340,8 +340,8 @@ jsonlines = ">=3.1.0,<4.0.0"
 lxml = ">=4.9.1,<5.0.0"
 mean_average_precision = ">=2021.4.26.0,<2022.0.0.0"
 numpy = [
-    {version = ">=2.1.0,<3.0.0", markers = "python_version >= \"3.13\""},
     {version = ">=1.24.4,<2.0.0", markers = "python_version < \"3.13\""},
+    {version = ">=2.1.0,<3.0.0", markers = "python_version >= \"3.13\""},
 ]
 opencv-python-headless = ">=4.6.0.66,<5.0.0.0"
 Pillow = ">=10.0.0,<11.0.0"
@@ -1259,8 +1259,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
     {version = ">=1.23.5", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
+    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
 ]
 
 [[package]]
@@ -1327,8 +1327,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
     {version = ">=1.23.2", markers = "python_version == \"3.11\""},
+    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
 ]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
@@ -1578,8 +1578,8 @@ files = [
 annotated-types = ">=0.6.0"
 pydantic-core = "2.23.4"
 typing-extensions = [
-    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
     {version = ">=4.6.1", markers = "python_version < \"3.13\""},
+    {version = ">=4.12.2", markers = "python_version >= \"3.13\""},
 ]
 
 [package.extras]
@@ -2669,4 +2669,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2a7bb169bf372df95b062bd967a02f6827ab3c1a10f9643be97b98279a999cfd"
+content-hash = "7f9f35187961a4c5880b217e87e7751218a86b35e7fe5844af8b7339d8e4bbb5"

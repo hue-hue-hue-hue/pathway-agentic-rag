@@ -15,7 +15,7 @@ from docling.datamodel.base_models import InputFormat, DocumentStream
 from docling.pipeline.standard_pdf_pipeline import StandardPdfPipeline
 from docling.pipeline.simple_pipeline import SimplePipeline
 from docling.datamodel.pipeline_options import PdfPipelineOptions
-from docling_core.types.doc import ImageRefMode
+from docling_core.types.doc import ImageRefMode, PictureItem, TableItem
 
 _log = logging.getLogger(__name__)
 
@@ -27,11 +27,13 @@ class DocumentProcessor:
         image_resolution_scale: float = 2.0,
         max_pages: Optional[int] = -1,
         max_file_size: Optional[int] = -1,
+        output_formats: Optional[List[str]] = None,
     ):
         self.output_dir = Path(output_dir)
         self.image_resolution_scale = image_resolution_scale
         self.max_pages = max_pages
         self.max_file_size = max_file_size
+        self.output_formats = output_formats or ["md"]  # Default to markdown only
         self._initialize_converter()
 
     def _initialize_converter(self):
@@ -107,16 +109,58 @@ class DocumentProcessor:
                 temp_file.unlink()
 
     def _process_pdf(self, conv_result, input_path: Path) -> Path:
-        """Process PDF document with image extraction"""
-        pdf_dir = self.output_dir / input_path.stem
+        """Process PDF document with image extraction and multiple output formats
+
+        Args:
+            conv_result: Conversion result from document converter
+            input_path: Path to the input PDF file
+
+        Returns:
+            Path to the output directory containing all generated files
+        """
+        doc_filename = input_path.stem
+        pdf_dir = self.output_dir / doc_filename
         pdf_dir.mkdir(parents=True, exist_ok=True)
 
+        # Create images directory
         images_dir = pdf_dir / "images"
         images_dir.mkdir(exist_ok=True)
 
-        # Save page images and other content
-        self._save_images(conv_result, images_dir)
-        self._save_outputs(conv_result, pdf_dir)
+        # Save page images
+        for page_no, page in conv_result.document.pages.items():
+            page_image_path = images_dir / f"page_{page.page_no}.png"
+            page.image.pil_image.save(page_image_path, format="PNG")
+
+        # Save table and picture images
+        table_counter = 0
+        picture_counter = 0
+        for element, _level in conv_result.document.iterate_items():
+            if isinstance(element, TableItem):
+                table_counter += 1
+                element_image_path = images_dir / f"table_{table_counter}.png"
+                element.image.pil_image.save(element_image_path, "PNG")
+
+            if isinstance(element, PictureItem):
+                picture_counter += 1
+                element_image_path = images_dir / f"picture_{picture_counter}.png"
+                element.image.pil_image.save(element_image_path, "PNG")
+
+        # Define available export formats
+        export_functions = {
+            "md": lambda: conv_result.document.export_to_markdown(
+                image_mode=ImageRefMode.EMBEDDED
+            ),
+            "json": lambda: conv_result.document.export_to_dict(),
+            "yaml": lambda: conv_result.document.export_to_dict(),
+            "txt": lambda: conv_result.document.export_to_document_tokens(),
+        }
+
+        # Export requested formats
+        for fmt in self.output_formats:
+            if fmt in export_functions:
+                output_path = pdf_dir / f"{doc_filename}.{fmt}"
+                with output_path.open("w") as fp:
+                    fp.write(str(export_functions[fmt]()))
 
         return pdf_dir
 
