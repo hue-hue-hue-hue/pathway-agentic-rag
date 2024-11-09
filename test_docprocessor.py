@@ -8,7 +8,7 @@ _log = logging.getLogger(__name__)
 
 def main():
     input_paths = [
-        Path("input_files/adaRAG1.pdf"),
+        Path("input_files/adaRAG.pdf"),
         # Add other paths as needed
     ]
 

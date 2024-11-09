@@ -9,6 +9,9 @@ readme = "README.md"
 python = "^3.11"
 docling = "^2.4.1"
 requests = "^2.32.3"
+swarm = {git = "https://github.com/openai/swarm.git"}
+duckduckgo-search = "^6.3.3"
+tavily-python = "^0.5.0"
 
 
 [build-system]
